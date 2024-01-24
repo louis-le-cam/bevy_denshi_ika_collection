@@ -1,0 +1,8 @@
+[package]
+name = "bevy_denshi_ika_camera_3d_controller"
+edition = "2021"
+version = "0.1.0"
+
+[dependencies]
+bevy = { workspace = true }
+bevy_denshi_ika_gen_plugin = { workspace = true }

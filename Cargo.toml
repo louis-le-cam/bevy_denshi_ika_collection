@@ -1,0 +1,20 @@
+[package]
+name = "bevy_denshi_ika_collection"
+edition = "2021"
+version = "0.1.0"
+
+[dependencies]
+bevy = { workspace = true, features = ["dynamic_linking"] }
+bevy_editor_pls = "0.7.0"
+bevy_denshi_ika_gen_plugin = { workspace = true }
+bevy_denshi_ika_camera_3d_controller = { path = "crates/camera_3d_controller" }
+
+[workspace]
+members = [
+  "crates/gen_plugin",
+  "crates/camera_3d_controller",
+]
+[workspace.dependencies]
+bevy = "0.12.1"
+bevy_denshi_ika_gen_plugin = { path = "crates/gen_plugin" }
+

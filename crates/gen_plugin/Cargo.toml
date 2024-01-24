@@ -1,0 +1,4 @@
+[package]
+name = "bevy_denshi_ika_gen_plugin"
+edition = "2021"
+version = "0.1.0"
