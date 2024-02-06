@@ -5,16 +5,19 @@ version = "0.1.0"
 
 [dependencies]
 bevy = { workspace = true, features = ["dynamic_linking"] }
-bevy_editor_pls = "0.7.0"
+bevy_editor_pls = { git = "https://github.com/louis-le-cam/bevy_editor_pls.git" }
 bevy_denshi_ika_gen_plugin = { workspace = true }
 bevy_denshi_ika_camera_3d_controller = { path = "crates/camera_3d_controller" }
+bevy_denshi_ika_camera_spring_arm = { path = "crates/camera_spring_arm" }
+bevy_xpbd_3d = { workspace = true }
 
 [workspace]
 members = [
   "crates/gen_plugin",
   "crates/camera_3d_controller",
+  "crates/camera_spring_arm",
 ]
 [workspace.dependencies]
 bevy = "0.12.1"
 bevy_denshi_ika_gen_plugin = { path = "crates/gen_plugin" }
-
+bevy_xpbd_3d = "0.3.3"

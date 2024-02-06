@@ -45,6 +45,8 @@
 ///     finish(|app| {});
 ///     /// [`Plugin::cleanup`]
 ///     cleanup(|app| {});
+///     #[cfg(feature = "dev")]
+///     test_has(Or<(With<Character>, With<CharacterController>, With<CharacterSpeed>)>, (Character, CharacterController, CharacterSpeed));
 /// }
 /// ```
 #[macro_export]
@@ -477,6 +479,73 @@ macro_rules! gen_plugin {
                     $(#[$attributes])*
                     ($func)($app);
                 }
+                { $vis , $($name)? ; $app }
+            }
+            $($tail)*
+        }
+    };
+
+    {
+        @internal
+        {
+            { $($build:tt)* } { $($finish:tt)* } { $($cleanup:tt)* }
+            { $vis:vis , $($name:ident)? ; $app:ident }
+        }
+        $(#[$attributes:meta])*
+        test_has($filter:ty, ($($required:ty),+));
+        $($tail:tt)*
+    } => {
+        $crate::gen_plugin! {
+            @internal
+            {
+                {
+                    $($build)*
+                    $(#[$attributes])*
+                    $app.add_systems(
+                        Update,
+                        |query: Query<(DebugName, ($(Has<$required>),+)), $filter>| {
+                            for (debug_name, elements) in &query {
+                                let elements = Into::<[bool; $((1, PhantomData::<$required>).0 +)+ 0]>::into(elements);
+
+                                if elements.into_iter().all(|has| has) {
+                                    continue;
+                                };
+
+
+                                bevy::log::error!(
+                                    "{}",
+                                    format!(
+                                        "Invalid entity {:?} {}",
+                                        debug_name,
+                                        [$((stringify!($required))),*]
+                                            .iter()
+                                            .enumerate()
+                                            .map(|(i, ty)| format!("\n\t{}: {}", ty, elements[i]))
+                                            .collect::<Vec<String>>()
+                                            .join("")
+                                    )
+                                );
+                            }
+                            // for element in &query {
+                            //     ![$(stringify!($required)),*].iter().enumerate().all(|(n, has)|);
+                            //     if $(!$required)||* {
+                            //         bevy::log::error!(
+                            //             "{}",
+                            //             format!(
+                            //                 "Invalid entity {:?} {}",
+                            //                 debug_name,
+                            //                 [$(($required, stringify!($reqired)))*]
+                            //                     .iter()
+                            //                     .map(|(has, ty)| format!("\n\t{}: {}", ty, has))
+                            //                     .join("")
+                            //             )
+                            //         );
+                            //     }
+                            // }
+                        }
+                    );
+                }
+                { $($finish)* } { $($cleanup)* }
                 { $vis , $($name)? ; $app }
             }
             $($tail)*
