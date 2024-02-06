@@ -505,7 +505,7 @@ macro_rules! gen_plugin {
                         Update,
                         |query: Query<(DebugName, ($(Has<$required>),+)), $filter>| {
                             for (debug_name, elements) in &query {
-                                let elements = Into::<[bool; $((1, PhantomData::<$required>).0 +)+ 0]>::into(elements);
+                                let elements = Into::<[bool; $((1, std::marker::PhantomData::<$required>).0 +)+ 0]>::into(elements);
 
                                 if elements.into_iter().all(|has| has) {
                                     continue;
