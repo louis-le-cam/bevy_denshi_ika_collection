@@ -511,7 +511,6 @@ macro_rules! gen_plugin {
                                     continue;
                                 };
 
-
                                 bevy::log::error!(
                                     "{}",
                                     format!(
@@ -526,22 +525,6 @@ macro_rules! gen_plugin {
                                     )
                                 );
                             }
-                            // for element in &query {
-                            //     ![$(stringify!($required)),*].iter().enumerate().all(|(n, has)|);
-                            //     if $(!$required)||* {
-                            //         bevy::log::error!(
-                            //             "{}",
-                            //             format!(
-                            //                 "Invalid entity {:?} {}",
-                            //                 debug_name,
-                            //                 [$(($required, stringify!($reqired)))*]
-                            //                     .iter()
-                            //                     .map(|(has, ty)| format!("\n\t{}: {}", ty, has))
-                            //                     .join("")
-                            //             )
-                            //         );
-                            //     }
-                            // }
                         }
                     );
                 }
